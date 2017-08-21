@@ -1,0 +1,24 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'pass'
+    ports:
+      - '3306:3306'
+  api:
+    build: ./rails
+    environment:
+      RAILS_ENV: development
+      MYSQL_ROOT_PASSWORD: 'pass'
+      DATABASE_URL: mysql2://root:pass@mysql:3306
+      SECRET_KEY_BASE: hogehoge
+    expose:
+      - '3000'
+    ports:
+      - '3000:3000'
+    volumes:
+      - ../quiz_rails:/usr/src/app
+    tty: true
+    links:
+      - mysql
